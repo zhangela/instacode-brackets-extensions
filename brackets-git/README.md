@@ -1,4 +1,4 @@
-Modified from https://github.com/zaggino/brackets-git.
+# Modified from https://github.com/zaggino/brackets-git.
 
 # Brackets-Git
 
