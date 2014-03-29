@@ -13,7 +13,7 @@ define(function (require, exports, module) {
             execute(terminalId, 'cd "' + projectRoot + '"');
         };
         
-        var deploy = function (terminalId) {
+        var startServer = function (terminalId) {
             execute(terminalId, 'meteor');
         };
 
@@ -21,7 +21,7 @@ define(function (require, exports, module) {
         return {
             clean: clean,
             cd: cd,
-            deploy: deploy
+            startServer: startServer
 
         };
     };

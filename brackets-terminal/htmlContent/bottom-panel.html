@@ -2,6 +2,7 @@
     <div class="toolbar simple-toolbar-layout">
         <div class="title"></div>
         <div id="terminal-commands" class="btn-group">
+            <span>
             <a href="#" data-command="clean" class="btn" data-toggle="tooltip" title="Clean terminal">
                 <i class="icon-eraser"></i>
             </a>
@@ -17,10 +18,10 @@
             <a href="#" data-action="new-terminal" class="btn" data-toggle="tooltip" title="Open a new terminal">
                 <i class="icon-plus"></i>
             </a>
-        </div>
-        <div id="meteor-commands" class="btn-group">
-            <a href="#" data-command="deploy" class="btn" data-toggle="tooltip" title="Deploy Meteor App">Start Meteor App</a>
-            
+            </span>
+            <span style="margin-left: 20px;">
+            <a href="#" data-command="startServer" class="btn" data-toggle="tooltip" title="Deploy Meteor App">Start Meteor Server</a>
+            </span>
         </div>
         <ul class="nav nav-tabs">
         </ul>
