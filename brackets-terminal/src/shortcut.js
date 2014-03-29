@@ -12,11 +12,16 @@ define(function (require, exports, module) {
             var projectRoot = ProjectManager.getProjectRoot().fullPath;
             execute(terminalId, 'cd "' + projectRoot + '"');
         };
+        
+        var deploy = function (terminalId) {
+            execute(terminalId, 'meteor');
+        };
 
 
         return {
             clean: clean,
             cd: cd,
+            deploy: deploy
 
         };
     };
