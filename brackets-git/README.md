@@ -1,3 +1,5 @@
+Modified from https://github.com/zaggino/brackets-git.
+
 # Brackets-Git
 
 Brackets-Git is an extension for [Brackets](http://brackets.io/) editor - it provides Git integration for Brackets.  
