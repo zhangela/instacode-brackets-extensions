@@ -22,8 +22,10 @@ define(function (require, exports, module) {
         };
 
         var cd = function (terminalId) {
-            execute(terminalId, 'cd "' + vmAppsPath + '"');
-            ProjectManager.openProject(hostAppsPath);
+            var appName = ProjectManager.getProjectRoot().name;
+
+            var vmProjectPath = vmAppsPath + "/" + appName;
+            execute(terminalId, 'cd "' + vmProjectPath + '"');
         };
         
         var createApp = function(terminalId) {
@@ -40,12 +42,11 @@ define(function (require, exports, module) {
                 var commands = [
                     "meteor create " + appName,
                     "meteor create /home/vagrant/.instacode/apps/" + appName,
-                    "sudo mount --bind /home/vagrant/.instacode/apps/" + appName + "/.meteor " + vmProjectPath + "/.meteor",
-                    "cd " + vmProjectPath,
-                    "clear"
+                    "clear",
+                    "cd " + vmProjectPath
                 ];
 
-                execute(terminalId, commands.join(";"));
+                execute(terminalId, commands.join("; "));
 
                 //timeout to allow "meteor create" to complete and create the directory
                 setTimeout(function() {
@@ -59,8 +60,22 @@ define(function (require, exports, module) {
         };
         
         var startServer = function (terminalId) {
-            var currentProjectPath = ProjectManager.getProjectRoot().fullPath;
-            execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + ' ; clear; meteor');
+            var appName = ProjectManager.getProjectRoot().name;
+
+            var vmProjectPath = vmAppsPath + "/" + appName;
+            var mountpoint = vmProjectPath + "/.meteor";
+            var mountCommand = "sudo mount --bind /home/vagrant/.instacode/apps/" + appName + "/.meteor " + mountpoint;
+
+            var commands = [
+                killServerCommand,
+                "cd " + vmProjectPath,
+                "mountpoint -q " + mountpoint + " || " + mountCommand,
+                "clear",
+                "meteor"
+            ];
+
+            execute(terminalId, commands.join("; "));
+
             openBrowser(terminalId);
         };
         
