@@ -56,7 +56,19 @@ define(function (require, exports, module) {
         if (this.terminals[terminalId]) {
             height = $bashPanel.height();
             width = $bashPanel.width();
-            height -= $bashPanel.find('.toolbar').height() + 10; //5px top/bottom border to remove
+            
+            var toolbarHeightSum = 0;
+            var numToolbars = 0;
+            
+            // add together heights of all of the toolbars
+            $bashPanel.find('.toolbar').each(function (i, toolbar) {
+                toolbarHeightSum += $(toolbar).height();
+                numToolbars += 1;
+            });
+            
+            // 5px padding on toolbars to remove
+            height -= toolbarHeightSum + 10 * numToolbars; 
+            
             width -= 10; // same here :)
             var $span = $('<span>X</span>');
             $span.css({
