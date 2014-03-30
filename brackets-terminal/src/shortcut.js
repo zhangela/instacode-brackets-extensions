@@ -97,11 +97,12 @@ define(function (require, exports, module) {
         };
         
         var deployApp = function(terminalId) {
-            
             var appName = ProjectManager.getProjectRoot().name;
+
+            appName = prompt("What do you want to name your app? The url will be <name>.meteor.com.", appName);
+
             var currentProjectPath = ProjectManager.getProjectRoot().fullPath;
             execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + '; meteor deploy ' + appName);
-            NativeApp.openURLInDefaultBrowser("http://" + appName + ".meteor.com");
         };
 
         
