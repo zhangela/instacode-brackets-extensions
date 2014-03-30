@@ -101,8 +101,8 @@ define(function (require, exports, module) {
 
             appName = prompt("What do you want to name your app? The url will be <name>.meteor.com.", appName);
 
-            var currentProjectPath = ProjectManager.getProjectRoot().fullPath;
-            execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + '; meteor deploy ' + appName);
+            var vmProjectPath = vmAppsPath + "/" + appName;
+            execute(terminalId, killServerCommand + '; cd ' + vmProjectPath + '; meteor deploy ' + appName);
         };
 
         
