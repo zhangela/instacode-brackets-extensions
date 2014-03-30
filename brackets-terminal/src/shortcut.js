@@ -5,8 +5,8 @@ define(function (require, exports, module) {
     var NativeApp = brackets.getModule("utils/NativeApp");
     var FileSystem = brackets.getModule("filesystem/FileSystem");
     var vmAppsPath = "/vagrant/apps";
-
     var hostAppsPath;
+
     if (brackets.platform === "win") {
         hostAppsPath = "/Users/sashko/git/InstaCode/apps"; // XXX this is wrong
     } else if (brackets.platform === "mac") {
@@ -35,7 +35,7 @@ define(function (require, exports, module) {
             appName = appName.replace(/ /g, "_");
             
             if (appName) {
-                cd(terminalId);
+                execute(terminalId, 'cd "' + vmAppsPath + '"');
 
                 var vmProjectPath = vmAppsPath + "/" + appName;
 
