@@ -7,12 +7,11 @@ define(function (require, exports, module) {
     var vmAppsPath = "/vagrant/apps";
 
     var hostAppsPath;
-    if (brackets.platform === "win") {
-        hostAppsPath = "/Users/sashko/git/InstaCode/apps"; // XXX this is wrong
-    } else if (brackets.platform === "mac") {
-        var username = brackets.app.getUserDocumentsDirectory().split("/")[2];
-        hostAppsPath = "/Users/" + username + "/git/InstaCode/apps";
-    }
+    
+    // brackets.app.getUserDocumentsDirectory() is
+    // C:/Users/Oleksandr/Documents or
+    // /Users/sashko/Documents
+    hostAppsPath = brackets.app.getUserDocumentsDirectory() + "/InstaCode/vagrant_env/apps";
 
     var killServerCommand = "kill -9 `ps ax | grep node | grep meteor | awk '{print $1}'`";
 
@@ -35,7 +34,7 @@ define(function (require, exports, module) {
             appName = appName.replace(/ /g, "_");
             
             if (appName) {
-                cd(terminalId);
+                execute(terminalId, 'cd "' + vmAppsPath + '"');
 
                 var vmProjectPath = vmAppsPath + "/" + appName;
 
