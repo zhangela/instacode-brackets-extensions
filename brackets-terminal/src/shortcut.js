@@ -3,7 +3,7 @@ define(function (require, exports, module) {
 
     var ProjectManager = brackets.getModule("project/ProjectManager");
     var NativeApp = brackets.getModule("utils/NativeApp");
-
+    var FileSystem = brackets.getModule("filesystem/FileSystem");
     var vmAppsPath = "/vagrant/apps";
 
     var hostAppsPath;
@@ -11,7 +11,7 @@ define(function (require, exports, module) {
         hostAppsPath = "/Users/sashko/git/InstaCode/apps"; // XXX this is wrong
     } else if (brackets.platform === "mac") {
         var username = brackets.app.getUserDocumentsDirectory().split("/")[2];
-        hostAppsPath = "/Users/" + username + "/git/InstaCode/apps";
+        hostAppsPath = "/Users/" + username + "/projects/test_apps";
     }
 
     var killServerCommand = "kill -9 `ps ax | grep node | grep meteor | awk '{print $1}'`";
@@ -53,8 +53,18 @@ define(function (require, exports, module) {
                 }, 1000);
             }
         };
+
+        var selectApp = function(terminalId) {
+            FileSystem.showOpenDialog(false, true, "Select App", hostAppsPath, [], function(error, paths) {
+                var hostProjectPath = paths[0];
+                ProjectManager.openProject(hostProjectPath);
+                var hostProjectPathSplits = hostProjectPath.split("/");
+                var projectName = hostProjectPathSplits[hostProjectPathSplits.length - 1];
+                execute(terminalId, "cd " + vmAppsPath + "/" + projectName);
+            });
+        };
         
-        var openBrowser = function(terminalId) {
+        var openBrowser = function() {
             NativeApp.openURLInDefaultBrowser("http://localhost:3000/");
         };
         
@@ -71,6 +81,7 @@ define(function (require, exports, module) {
             execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + '; meteor deploy ' + appName);
             NativeApp.openURLInDefaultBrowser("http://" + appName + ".meteor.com");
         };
+
         
         return {
             clean: clean,
@@ -78,7 +89,8 @@ define(function (require, exports, module) {
             createApp: createApp,
             startServer: startServer,
             openBrowser: openBrowser,
-            deployApp: deployApp
+            deployApp: deployApp,
+            selectApp: selectApp
         };
     };
 });
