@@ -33,15 +33,6 @@ define(function (require, exports, module) {
         terminalManager.handleResize(panel.$panel, currentTerminal);
     }
 
-    function addToFontSize(amount) {
-        var $terminal = $('.terminal'),
-            fontsize = parseInt($terminal.css('font-size'), 10);
-        fontsize = Math.max(fontsize + amount, 1);
-        settings.set('fontSize', fontsize);
-        $terminal.css('font-size', fontsize + 'px');
-        resize();
-    }
-
     function init() {
 
         toolbarManager.setStatus(toolbarManager.NOT_RUNNING);
@@ -58,11 +49,7 @@ define(function (require, exports, module) {
                 return;
             }
             var action = command;
-            if (action && action === 'font-plus') {
-                addToFontSize(1);
-            } else if (action && action === 'font-minus') {
-                addToFontSize(-1);
-            } else if (action && action === 'new-terminal') {
+            if (action && action === 'new-terminal') {
                 terminalManager.createTerminal();
             }
         });
