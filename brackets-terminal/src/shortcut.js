@@ -57,11 +57,13 @@ define(function (require, exports, module) {
 
         var selectApp = function(terminalId) {
             FileSystem.showOpenDialog(false, true, "Select App", hostAppsPath, [], function(error, paths) {
-                var hostProjectPath = paths[0];
-                ProjectManager.openProject(hostProjectPath);
-                var hostProjectPathSplits = hostProjectPath.split("/");
-                var projectName = hostProjectPathSplits[hostProjectPathSplits.length - 1];
-                execute(terminalId, "cd " + vmAppsPath + "/" + projectName);
+                if (paths && paths.length > 0) {
+                    var hostProjectPath = paths[0];
+                    ProjectManager.openProject(hostProjectPath);
+                    var hostProjectPathSplits = hostProjectPath.split("/");
+                    var projectName = hostProjectPathSplits[hostProjectPathSplits.length - 1];
+                    execute(terminalId, "cd " + vmAppsPath + "/" + projectName);
+                }
             });
         };
         
