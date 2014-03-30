@@ -12,6 +12,7 @@ define(function (require, exports, module) {
 
         var cd = function (terminalId) {
             execute(terminalId, 'cd "' + appsPath + '"');
+            ProjectManager.openProject(appsPath);
         };
         
         var createApp = function(terminalId) {
@@ -31,16 +32,19 @@ define(function (require, exports, module) {
         
         var startServer = function (terminalId) {
             var currentProjectPath = ProjectManager.getProjectRoot().fullPath;
-            execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + ' ; clear; meteor');
+            execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + ' ; clear; open http://localhost:3000/; meteor');
         };
         
 
-
+        var openBrowser = function(terminalId) {
+            execute(terminalId, "open http://localhost:3000/");
+        };
         return {
             clean: clean,
             cd: cd,
             createApp: createApp,
-            startServer: startServer
+            startServer: startServer,
+            openBrowser: openBrowser
 
         };
     };
