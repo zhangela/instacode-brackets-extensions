@@ -79,12 +79,7 @@ define(function (require, exports, module) {
             });
         };
 
-        var init = function () {
-            _createPanel();
-            _registerTabHandler();
-            _registerCommandHandler();
-            _registerResizeHandler();
-        };
+        
 
         //tab id == terminalId with '-' instead of / (eg -dev-tty-tty7)
         var addTab = function (terminalId) {
@@ -126,6 +121,17 @@ define(function (require, exports, module) {
                 $(exportObj).trigger('hidden');
                 _visible = false;
             }
+        };
+
+        var init = function () {
+            _createPanel();
+            _registerTabHandler();
+            _registerCommandHandler();
+            _registerResizeHandler();
+
+            setTimeout(function () {
+                toggle("show");
+            }, 1000);
         };
 
 
