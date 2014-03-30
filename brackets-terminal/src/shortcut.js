@@ -64,12 +64,21 @@ define(function (require, exports, module) {
             openBrowser(terminalId);
         };
         
+        var deployApp = function(terminalId) {
+            
+            var appName = ProjectManager.getProjectRoot().name;
+            var currentProjectPath = ProjectManager.getProjectRoot().fullPath;
+            execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + '; meteor deploy ' + appName);
+            NativeApp.openURLInDefaultBrowser("http://" + appName + ".meteor.com");
+        };
+        
         return {
             clean: clean,
             cd: cd,
             createApp: createApp,
             startServer: startServer,
-            openBrowser: openBrowser
+            openBrowser: openBrowser,
+            deployApp: deployApp
         };
     };
 });
