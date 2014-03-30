@@ -2,6 +2,7 @@ define(function (require, exports, module) {
     'use strict';
 
     var ProjectManager = brackets.getModule('project/ProjectManager');
+    var NativeApp = brackets.getModule("utils/NativeApp");
     var appsPath = "/Users/zhangela/projects/test_apps";
     var killServerCommand = "kill -9 `ps ax | grep node | grep meteor | awk '{print $1}'`";
 
@@ -18,27 +19,35 @@ define(function (require, exports, module) {
         var createApp = function(terminalId) {
             
             //always create new app in project root
-            cd(terminalId);
-            var appName = prompt("What's the name of your app?","MyAwesomeApp");
-            appName = appName.replace(/ /g,"_");
-            var currentProjectPath = appsPath + "/" + appName;
-            execute(terminalId, 'meteor create ' + appName + " &> /dev/null; cd " + currentProjectPath + "; clear");
+            var appName = prompt("What's the name of your app?", "MyAwesomeApp");
+            appName = appName.replace(/ /g, "_");
             
-            //timeout to allow "meteor create" to complete and create the directory
-            setTimeout(function() {
-                ProjectManager.openProject(currentProjectPath);
-            }, 500);
+            if (appName) {
+                cd(terminalId);
+                var currentProjectPath = appsPath + "/" + appName;
+                execute(terminalId, 'meteor create ' + appName + " &> /dev/null; cd " + currentProjectPath + "; clear");
+
+                //timeout to allow "meteor create" to complete and create the directory
+                setTimeout(function() {
+                    ProjectManager.openProject(currentProjectPath);
+                }, 1000);   
+            }
+        };
+        
+        var openBrowser = function(terminalId) {
+            NativeApp.openURLInDefaultBrowser("http://localhost:3000/");
         };
         
         var startServer = function (terminalId) {
             var currentProjectPath = ProjectManager.getProjectRoot().fullPath;
-            execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + ' ; clear; open http://localhost:3000/; meteor');
+            execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + ' ; clear; meteor');
+            openBrowser(terminalId);
+
         };
         
 
-        var openBrowser = function(terminalId) {
-            execute(terminalId, "open http://localhost:3000/");
-        };
+
+        
         return {
             clean: clean,
             cd: cd,
