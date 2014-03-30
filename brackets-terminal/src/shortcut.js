@@ -14,7 +14,9 @@ define(function (require, exports, module) {
 
     var killServerCommand = "kill -9 `ps ax | grep node | grep meteor | awk '{print $1}'`";
 
-    module.exports = function (execute) {
+    module.exports = function (terminalManager) {
+        var execute = terminalManager.command.bind(terminalManager);
+
         var clean = function (terminalId) {
             execute(terminalId, 'clear');
         };
@@ -68,6 +70,10 @@ define(function (require, exports, module) {
         };
         
         var startServer = function (terminalId) {
+            
+            alert("start");
+            terminalManager.createTerminal();
+
             var appName = ProjectManager.getProjectRoot().name;
 
             var vmProjectPath = vmAppsPath + "/" + appName;

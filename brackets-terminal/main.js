@@ -10,8 +10,9 @@ define(function (require, exports, module) {
         settings = require('src/settings'),
         panel = require('src/panel')(),
         toolbarManager = require('src/toolbarManager'),
-        terminalManager = require('src/terminal')(),
-        shortcut = require('src/shortcut')(terminalManager.command.bind(terminalManager));
+        terminalManager = require('src/terminal')();
+
+    var shortcut = require('src/shortcut')(terminalManager);
 
 
 
