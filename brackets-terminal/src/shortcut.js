@@ -34,12 +34,15 @@ define(function (require, exports, module) {
             
             if (appName) {
                 cd(terminalId);
+
                 var vmProjectPath = vmAppsPath + "/" + appName;
+
                 var commands = [
-                    "meteor create " + appName + " &> /dev/null",
+                    "meteor create " + appName,
                     "meteor create /home/vagrant/.instacode/apps/" + appName,
                     "sudo mount --bind /home/vagrant/.instacode/apps/" + appName + "/.meteor " + vmProjectPath + "/.meteor",
-                    "cd " + vmProjectPath
+                    "cd " + vmProjectPath,
+                    "clear"
                 ];
 
                 execute(terminalId, commands.join(";"));
@@ -59,11 +62,7 @@ define(function (require, exports, module) {
             var currentProjectPath = ProjectManager.getProjectRoot().fullPath;
             execute(terminalId, killServerCommand + '; cd ' + currentProjectPath + ' ; clear; meteor');
             openBrowser(terminalId);
-
         };
-        
-
-
         
         return {
             clean: clean,
@@ -71,9 +70,6 @@ define(function (require, exports, module) {
             createApp: createApp,
             startServer: startServer,
             openBrowser: openBrowser
-
         };
     };
-
-
 });
