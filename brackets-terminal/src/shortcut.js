@@ -1,9 +1,19 @@
 define(function (require, exports, module) {
-    'use strict';
+    "use strict";
 
-    var ProjectManager = brackets.getModule('project/ProjectManager');
+    var ProjectManager = brackets.getModule("project/ProjectManager");
     var NativeApp = brackets.getModule("utils/NativeApp");
-    var appsPath = "/Users/zhangela/projects/test_apps";
+
+    var vmAppsPath = "/vagrant/apps";
+
+    var hostAppsPath;
+    if (brackets.platform === "win") {
+        hostAppsPath = "/Users/sashko/git/InstaCode/apps"; // XXX this is wrong
+    } else if (brackets.platform === "mac") {
+        var username = brackets.app.getUserDocumentsDirectory().split("/")[2];
+        hostAppsPath = "/Users/" + username + "/git/InstaCode/apps";
+    }
+
     var killServerCommand = "kill -9 `ps ax | grep node | grep meteor | awk '{print $1}'`";
 
     module.exports = function (execute) {
@@ -12,8 +22,8 @@ define(function (require, exports, module) {
         };
 
         var cd = function (terminalId) {
-            execute(terminalId, 'cd "' + appsPath + '"');
-            ProjectManager.openProject(appsPath);
+            execute(terminalId, 'cd "' + vmAppsPath + '"');
+            ProjectManager.openProject(hostAppsPath);
         };
         
         var createApp = function(terminalId) {
@@ -24,13 +34,20 @@ define(function (require, exports, module) {
             
             if (appName) {
                 cd(terminalId);
-                var currentProjectPath = appsPath + "/" + appName;
-                execute(terminalId, 'meteor create ' + appName + " &> /dev/null; cd " + currentProjectPath + "; clear");
+                var vmProjectPath = vmAppsPath + "/" + appName;
+                var commands = [
+                    "meteor create " + appName + " &> /dev/null",
+                    "meteor create /home/vagrant/.instacode/apps/" + appName,
+                    "sudo mount --bind /home/vagrant/.instacode/apps/" + appName + "/.meteor " + vmProjectPath + "/.meteor",
+                    "cd " + vmProjectPath
+                ];
+
+                execute(terminalId, commands.join(";"));
 
                 //timeout to allow "meteor create" to complete and create the directory
                 setTimeout(function() {
-                    ProjectManager.openProject(currentProjectPath);
-                }, 1000);   
+                    ProjectManager.openProject(hostAppsPath + "/" + appName);
+                }, 1000);
             }
         };
         
