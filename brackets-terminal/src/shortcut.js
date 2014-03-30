@@ -72,8 +72,6 @@ define(function (require, exports, module) {
         };
         
         var startServer = function (terminalId) {
-            
-            alert("start");
             terminalManager.createTerminal();
 
             var appName = ProjectManager.getProjectRoot().name;
@@ -92,7 +90,10 @@ define(function (require, exports, module) {
 
             execute(terminalId, commands.join("; "));
 
-            openBrowser(terminalId);
+            setTimeout(function () {
+                openBrowser(terminalId);
+            }, 1000);
+            
         };
         
         var deployApp = function(terminalId) {
