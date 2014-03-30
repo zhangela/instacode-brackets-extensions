@@ -5,14 +5,12 @@ define(function (require, exports, module) {
     var NativeApp = brackets.getModule("utils/NativeApp");
     var FileSystem = brackets.getModule("filesystem/FileSystem");
     var vmAppsPath = "/vagrant/apps";
-    var hostAppsPath;
 
-    if (brackets.platform === "win") {
-        hostAppsPath = "/Users/sashko/git/InstaCode/apps"; // XXX this is wrong
-    } else if (brackets.platform === "mac") {
-        var username = brackets.app.getUserDocumentsDirectory().split("/")[2];
-        hostAppsPath = "/Users/" + username + "/projects/test_apps";
-    }
+    var hostAppsPath;
+    // brackets.app.getUserDocumentsDirectory() is
+    // C:/Users/Oleksandr/Documents or
+    // /Users/sashko/Documents
+    hostAppsPath = brackets.app.getUserDocumentsDirectory() + "/InstaCode/vagrant_env/apps";
 
     var killServerCommand = "kill -9 `ps ax | grep node | grep meteor | awk '{print $1}'`";
 
