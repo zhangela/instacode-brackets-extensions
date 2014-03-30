@@ -168,6 +168,8 @@ define(function (require, exports, module) {
 
         $(terminalManager).on('created', function (event, terminalId) {
             createNewTerminal(terminalId);
+            shortcut.cd(terminalId);
+            shortcut.clean(terminalId);
             first = false;
             if (toolbarManager.status !== toolbarManager.ACTIVE) {
                 toolbarManager.setStatus(toolbarManager.NOT_ACTIVE);
