@@ -41,6 +41,7 @@ define(function (require, exports, module) {
         SettingsDialog.show();
     }
 
+/*
     // Display settings panel on first start / changelog dialog on version change
     ExtensionInfo.get().then(function (packageJson) {
         var lastVersion    = Preferences.get("lastVersion"),
@@ -53,7 +54,7 @@ define(function (require, exports, module) {
             Preferences.persist("lastVersion", currentVersion);
             ChangelogDialog.show();
         }
-    });
+    });*/
 
     // Register command and add it to the menu.
     var SETTINGS_COMMAND_ID = "brackets-git.settings";
